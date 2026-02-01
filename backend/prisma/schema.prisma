@@ -18,7 +18,7 @@ model User {
   email       String        @unique
   password    String
   application Application[]
-  skills      String[]
+  skills      String[]      @default([])
   resumeURL   String?
   createdAt   DateTime      @default(now())
 }
@@ -34,7 +34,7 @@ model Job {
   truthFlags      String[]
   location        String
   requiredSkills  String[]
-  companyName     String
+  company         String
 }
 
 model Application {

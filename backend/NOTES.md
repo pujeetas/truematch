@@ -6,7 +6,7 @@ npm run dev
 
 ## Prisma commands
 
-npx prisma generate
+npx prisma generate 
 npx prisma migrate dev --name <name>
 npx prisma studio
 
