@@ -1,26 +1,28 @@
-import express from "express"
-import { ApolloServer } from "@apollo/server"
-import {expressMiddleware} from "@as-integrations/express5"
-import { typeDefs } from "./graphql/schema.js";
-import { resolvers } from "./graphql/resolver.js";
-import cors from "cors"
-import bodyParser from "body-parser";
-
-const app = express();
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { typeDefs } from './graphql/schema.js';
+import { resolvers } from './graphql/resolver.js';
+import { verifyToken } from './utils/auth.js';
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers
-})
+  typeDefs,
+  resolvers,
+});
 
-await server.start();
+const { url } = await startStandaloneServer(server, {
+  context: async ({ req }) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (token) {
+      try {
+        const decoded = verifyToken(token);
+        return { userId: decoded.userId };
+      } catch (e) {
+        return {};
+      }
+    }
+    return {};
+  },
+  listen: { port: 4000 },
+});
 
-app.use(cors());
-app.use(bodyParser.json())
-
-app.use("/graphql", expressMiddleware(server));
-
-app.listen(4000, () => {
-    console.log("Server running at 4000")
-})
-
+console.log(`Server ready at ${url}`);

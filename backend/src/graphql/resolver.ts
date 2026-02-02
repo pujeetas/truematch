@@ -28,6 +28,13 @@ export const resolvers = {
     },
     applications: async() => {
       return await prisma.application.findMany();
+    },
+
+    me: async (_:any, context : {userId : string}) => {
+      if(!context.userId){
+        throw new Error("Not Authenticated");
+      }
+      return await prisma.user.findUnique({where: {id: context.userId}})
     }
   },
   Mutation: {

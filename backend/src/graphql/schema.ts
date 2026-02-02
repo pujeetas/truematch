@@ -51,4 +51,8 @@ export const typeDefs = `
         signup(email: String!, password: String!, fullName: String!): AuthPayload!
         login(email: String!, password: String!) : AuthPayload!
     }
+
+    type Query{
+        me : User
+    }
 `;
