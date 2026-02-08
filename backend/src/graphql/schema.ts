@@ -18,7 +18,7 @@ export const typeDefs = `
         postedAt: String!
         description: String!
         requiredSkills: [String!]!
-        experienceYear: Int!
+        experienceYears: Int!
         location: String!
         salary: String!
         truthFlags: [String!]!
@@ -32,6 +32,8 @@ export const typeDefs = `
         jobId: String!
         matchScore: Int!
         status: String!
+        job: Job!
+        user: User!
     }
 
     type Query {
@@ -40,6 +42,9 @@ export const typeDefs = `
         job(id:ID!): Job
         jobs: [Job!]!
         applications: [Application!]!
+         me : User
+        myApplications: [Application!]!
+
     }
 
     type AuthPayload{
@@ -50,9 +55,8 @@ export const typeDefs = `
     type Mutation{
         signup(email: String!, password: String!, fullName: String!): AuthPayload!
         login(email: String!, password: String!) : AuthPayload!
-    }
-
-    type Query{
-        me : User
+        createJob(title: String!, company: String!, description: String!, requiredSkills: [String!]!, experienceYears: Int!, location: String!, salary: String!): Job!
+        updateSkills(skills: [String!]!): User!
+        applyToJob(jobId: ID!) : Application!
     }
 `;
